@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Button, TextInput, Image } from "react-native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { NavigationContainer } from "@react-navigation/native";
+import * as React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Button, TextInput } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 
-// SOS Plus Screen with Panic Button
+
 function SOSPlus() {
   const handlePanicPress = () => {
-    Alert.alert("Panic button pressed!");
+    Alert.alert('Panic button pressed!');
   };
 
   return (
@@ -18,34 +18,27 @@ function SOSPlus() {
         <Text style={styles.panicButtonText}>Panic</Text>
       </TouchableOpacity>
     </View>
-  );
-}
+  )}
 
-// Signup Screen
-function SignupScreen({ navigation }: { navigation: any }) {
+
+function SignupScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleSignup = () => {
-    // Validate signup fields
+    // Add logic for signup validation
     if (username && password && phoneNumber) {
       Alert.alert("Signup successful");
-      navigation.navigate("SOS Plus"); // Navigate to the drawer
+      return <MyDrawer />;
+
     } else {
       Alert.alert("Please fill in all fields");
     }
   };
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <ThemedText type="title" style={styles.headerTitle}>
-          Create Account
-        </ThemedText>
-      }
-    >
+    <View>
       <ThemedView style={styles.container}>
         <ThemedText type="subtitle" style={styles.subtitle}>
           Signup
@@ -80,35 +73,36 @@ function SignupScreen({ navigation }: { navigation: any }) {
             keyboardType="numeric"
           />
         </View>
+        --- OR ---
+        <p>Signup with google </p>
+        <img
+          src="/app/(tabs)/icons/googleIcon.png"
+          alt="Google Icon"
+          style={{ width: "50px", height: "50px" }}
+        />
 
-        <Text style={styles.orText}>--- OR ---</Text>
-
-        <Text style={styles.label}>Signup with Google:</Text>
-        <Image source={require('@/assets/images/googleIcon.png')} style={styles.googleIcon} />
-
-        <Button title="Signup" onPress={handleSignup} color="#3498db" />
+        <Button title="Signup" onPress={() => MyDrawer} color="#3498db" />
       </ThemedView>
-    </ParallaxScrollView>
+    </View>
   );
 }
-// Drawer Screens
+
 function AddFriends() {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Add Friends Screen</Text>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Article Screen</Text>
     </View>
   );
 }
 
 function MyFriends() {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>My Friends Screen</Text>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Article Screen</Text>
     </View>
   );
 }
 
-// Drawer Navigation
 const Drawer = createDrawerNavigator();
 
 function MyDrawer() {
@@ -121,36 +115,37 @@ function MyDrawer() {
   );
 }
 
-// Main App Component with Navigation
+// No need for NavigationContainer here if it's already in the root of the app
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Signup">
-        <Drawer.Screen name="Signup" component={SignupScreen} />
-        <Drawer.Screen name="Main App" component={MyDrawer} />
-      </Drawer.Navigator>
-    </NavigationContainer>
-  );
+  return <SignupScreen  />;
 }
 
-// Styles
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  text: {
+    fontSize: 18,
+    marginBottom: 20,
   },
   panicButton: {
-    backgroundColor: "red",
+    backgroundColor: 'red',
     paddingVertical: 65,
     paddingHorizontal: 50,
-    borderRadius: 1000, // Circular shape
+    borderRadius: 1000, // Makes the button circular
   },
   panicButtonText: {
-    color: "white",
+    color: 'white',
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
+    padding: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
   },
   headerTitle: {
     fontSize: 24,
@@ -164,7 +159,7 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   inputContainer: {
-    width: "80%",
+    width: "30%",
     marginBottom: 20,
   },
   label: {
@@ -181,15 +176,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9",
     fontSize: 16,
   },
-  orText: {
-    marginVertical: 20,
-    fontSize: 16,
-    color: "#888",
-  },
-  googleIcon: {
-    width: 50,
-    height: 50,
-    marginVertical: 10,
-  },
 });
-
