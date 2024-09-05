@@ -4,9 +4,17 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, EmailStr
 import firebase_admin
 from firebase_admin import credentials, auth
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this to your frontend's origin
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate("sosplus-c0ae8-firebase-adminsdk-y99g3-2c3b0598d9.json")
 firebase_admin.initialize_app(cred)
