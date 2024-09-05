@@ -21,71 +21,7 @@ function SOSPlus() {
   )}
 
 
-function SignupScreen() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
 
-  const handleSignup = () => {
-    // Add logic for signup validation
-    if (username && password && phoneNumber) {
-      Alert.alert("Signup successful");
-      return <MyDrawer />;
-
-    } else {
-      Alert.alert("Please fill in all fields");
-    }
-  };
-
-  return (
-    <View>
-      <ThemedView style={styles.container}>
-        <ThemedText type="subtitle" style={styles.subtitle}>
-          Signup
-        </ThemedText>
-        <View style={styles.inputContainer}>
-          <ThemedText style={styles.label}>Full Name:</ThemedText>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your full name"
-            value={username}
-            onChangeText={setUsername}
-            autoCapitalize="words"
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <ThemedText style={styles.label}>Password:</ThemedText>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <ThemedText style={styles.label}>Cellphone Number:</ThemedText>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your cellphone number"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-            keyboardType="numeric"
-          />
-        </View>
-        --- OR ---
-        <p>Signup with google </p>
-        <img
-          src="/app/(tabs)/icons/googleIcon.png"
-          alt="Google Icon"
-          style={{ width: "50px", height: "50px" }}
-        />
-
-        <Button title="Signup" onPress={() => MyDrawer} color="#3498db" />
-      </ThemedView>
-    </View>
-  );
-}
 
 function AddFriends() {
   return (
@@ -117,7 +53,7 @@ function MyDrawer() {
 
 // No need for NavigationContainer here if it's already in the root of the app
 export default function App() {
-  return <SignupScreen  />;
+  return <MyDrawer  />;
 }
 
 
