@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate("sosplus-c0ae8-firebase-adminsdk-y99g3-2c3b0598d9.json")
+cred = credentials.Certificate("sosplus-c0ae8-firebase-adminsdk-y99g3-9d8349de51.json")
 firebase_admin.initialize_app(cred)
 
 @app.get("/test-firebase")
