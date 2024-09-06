@@ -58,10 +58,13 @@ async def signup(user: SignUpRequest):
         # Create a new user with Firebase Authentication
         new_user = auth.create_user(
             email=user.email,
-            password=user.password,
+            password=user.password,  # You might not need this if you are handling passwords in Firestore
             display_name=user.name,
             phone_number=user.phone
         )
+
+        # Hash the password before storing it in Firestore
+        hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
 
         # Create a user document in Firestore
         user_data = {
@@ -69,7 +72,8 @@ async def signup(user: SignUpRequest):
             "email": new_user.email,
             "name": user.name,
             "phone": user.phone,
-            "emergency_contacts": []  # Initialize with an empty emergency contacts list
+            "groups": [],  # Initialize with an empty groups list
+            "password": hashed_password.decode('utf-8')  # Store the hashed password
         }
 
         # Add the user data to Firestore
@@ -91,8 +95,31 @@ async def signin(user: SignInRequest):
         # Sign in the user using Firebase Authentication
         user_record = auth.get_user_by_email(user.email)
         
+        # Here we would typically verify the password
         # Note: Firebase Admin SDK does not support direct password verification.
-        return {"message": "User signed in successfully", "uid": user_record.uid}
+        # You need to use Firebase Client SDK on the client side for authentication.
+        
+        # If user is found, fetch user document from Firestore
+        user_doc_ref = db.collection("users").document(user_record.uid)
+        user_doc = user_doc_ref.get()
+        
+        if not user_doc.exists:
+            raise HTTPException(status_code=404, detail="User not found in Firestore.")
+
+        # Get user data
+        user_data = user_doc.to_dict()
+        
+        # Retrieve the emergency contacts
+        emergency_contacts = user_data.get("emergency_contacts", [])
+
+        return {
+            "message": "User signed in successfully",
+            "uid": user_record.uid,
+            "email": user_record.email,
+            "name": user_data["name"],
+            "phone": user_data["phone"],
+            "emergency_contacts": emergency_contacts
+        }
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error signing in: {str(e)}")
 
